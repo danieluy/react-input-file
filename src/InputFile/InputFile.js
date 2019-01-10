@@ -8,6 +8,8 @@ class InputFile extends PureComponent {
     super();
     this.state = {};
     this.onChange = this.onChange.bind(this);
+    this.onDrop = this.onDrop.bind(this);
+    this.onDragOver = this.onDragOver.bind(this);
     this.output = this.output.bind(this);
   }
 
@@ -24,6 +26,27 @@ class InputFile extends PureComponent {
         .catch(err => onError(err));
     else
       onComplete(multiple ? [] : null);
+  }
+
+  // TODO make it DRY
+  onDrop(evt) {
+    evt.preventDefault();
+    const { onComplete, multiple, output, onError } = this.props;
+    const files = Array.from(evt.dataTransfer.files).filter((file) => {
+      if (output === 'ANY')
+        return true;
+      return file.type === outputs[output].mimeType;
+    });
+    if (files.length)
+      Promise.all(files.map(file => this.readFile(file)))
+        .then(results => this.output(results))
+        .catch(err => onError(err));
+    else
+      onComplete(multiple ? [] : null);
+  }
+
+  onDragOver(evt) {
+    evt.preventDefault();
   }
 
   output(results) {
@@ -66,14 +89,20 @@ class InputFile extends PureComponent {
   }
 
   render() {
-    const { multiple, children, output } = this.props;
+    const { multiple, children, output, noDrop } = this.props;
     const id = Math.random();
     const label = multiple ? 'Upload files' : 'Upload file';
     const accept = output !== 'ANY'
       ? outputs[output].accept
       : undefined;
     return (
-      <label htmlFor={id} aria-label={label} style={!children ? style.button : {}}>
+      <label
+        htmlFor={id}
+        aria-label={label}
+        style={!children ? style.button : { cursor: 'pointer' }}
+        onDragOver={!noDrop ? this.onDragOver : null}
+        onDrop={!noDrop ? this.onDrop : null}
+      >
         {children || label}
         <input
           id={id}
@@ -95,14 +124,16 @@ InputFile.propTypes = {
   onError: PropTypes.func,
   output: PropTypes.oneOf(['ANY', 'JSON', 'IMG']),
   readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']),
+  noDrop: PropTypes.bool,
 };
 
 InputFile.defaultProps = {
   multiple: false,
   children: null,
   output: 'ANY',
-  onError: err => console.error(err),
   readAs: 'TEXT',
+  noDrop: false,
+  onError: err => console.error(err),
 };
 
 export default InputFile;

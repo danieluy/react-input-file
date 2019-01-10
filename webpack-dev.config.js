@@ -8,10 +8,10 @@ module.exports = (env) => {
       contentBase: path.join(__dirname, 'build'),
       compress: true,
       port: 5000,
-      historyApiFallback: true
+      historyApiFallback: true,
     },
     entry: {
-      bundle: path.join(__dirname, 'src/index.js')
+      bundle: path.join(__dirname, 'src/index.js'),
     },
     output: {
       publicPath: '/',
@@ -23,15 +23,15 @@ module.exports = (env) => {
         {
           loader: 'babel-loader',
           include: [
-            path.join(__dirname, '/src/')
+            path.join(__dirname, '/src/'),
           ],
           exclude: /(node_modules|bower_components)/,
           test: /\.jsx?$/,
           query: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
         },
-      ]
+      ],
     },
   };
   if (env.development)
@@ -40,10 +40,10 @@ module.exports = (env) => {
     config.plugins = [
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify('production')
-        }
+          NODE_ENV: JSON.stringify('production'),
+        },
       }),
-      new UglifyJsPlugin({})
+      new UglifyJsPlugin({}),
     ];
   return config;
 };
