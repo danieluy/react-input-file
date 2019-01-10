@@ -30,5 +30,10 @@
   },
   "author": "Daniel Sosa <danielsosa.dev@gmail.com>",
   "license": "MIT",
-  "main": "./lib/index.js"
+  "main": "./lib/index.js",
+  "keywords": [
+    "react",
+    "input",
+    "file"
+  ]
 }
