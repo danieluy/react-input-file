@@ -35,7 +35,7 @@ class App extends Component {
 | onComplete  | ``Function``                                                   | Called with ``Any`` when upload completes                                                                        | -                               | ``true``  |
 | onError     | ``Function``                                                   | Called with ``Error`` when fail                                                                                  | ``(err) => console.error(err)`` | ``false`` |
 | multiple    | ``Boolean``                                                    | Allows multi-selection and forces ``onComplete`` to return an ``Array``                                          | ``false``                       | ``false`` |
-| noDrop      | ``Boolean``                                                    | Allows the drawn element to handle drag & drop files                                                             | ``false``                       | ``false`` |
+| noDrop      | ``Boolean``                                                    | Disables drag & drop support                                                                                     | ``false``                       | ``false`` |
 | readAs      | ``Enum['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']``  | Sets the read mode of ``FileReader`` [[+]](https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods)  | 'TEXT'                          | ``false`` |
 | output      | ``Enum['ANY', 'JSON']``                                        | Applies a formar to the result                                                                                   | 'ANY'                           | ``false`` |
 
