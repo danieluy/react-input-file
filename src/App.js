@@ -2,64 +2,98 @@ import React, { PureComponent, Fragment } from 'react';
 import InputFile from './InputFile/InputFile';
 
 class App extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      progress: {
+        porcentage: 0,
+        bits: 0,
+      },
+    };
+  }
+
   render() {
     return (
       <Fragment>
-        <Title>Basic usage</Title>
-        <Pre>
-          {getPre(1)}
-        </Pre>
-        <InputFile
-          onComplete={result => console.log(result)}
-        />
+        <Card>
+          <Title>Basic usage</Title>
+          <InputFile
+            onComplete={result => console.log(result)}
+          />
+          <Pre>{getPre('BASIC_USAGE')}</Pre>
+        </Card>
 
-        <Title>Explicit output type</Title>
-        <Pre>
-          {getPre(2)}
-        </Pre>
-        <InputFile
-          onComplete={result => console.log(result)}
-          output="JSON"
-        />
-
-        <Title>With children</Title>
-        <Pre>
-          {getPre(3)}
-        </Pre>
-        <InputFile onComplete={result => console.log(result)}>
-          <button
-            style={{
-              color: '#E62264',
-              backgroundColor: '#FFF',
-              border: '2px solid #E62264',
-              borderRadius: 5,
-              padding: 10,
-              textTransform: 'uppercase',
-              cursor: 'inherit',
-            }}
+        <Card>
+          <Title>Progress handler</Title>
+          <InputFile
+            onComplete={result => console.log(result)}
+            onProgress={progress => this.setState({ progress })}
+          />
+          <div style={{
+            height: 20,
+            backgroundColor: '#E62264',
+            width: `${this.state.progress.porcentage}%`,
+            fontFamily: 'sans-serif',
+            borderRadius: 10,
+          }}
           >
-            Custom button
-          </button>
-        </InputFile>
-
-        <Pre>
-          {getPre(4)}
-        </Pre>
-        <InputFile onComplete={result => console.log(result)}>
-          <div
-            style={{
-              color: '#E6226488',
-              backgroundColor: '#FFF',
-              border: '2px dotted #E62264',
-              borderRadius: 20,
-              padding: 20,
-              fontFamily: 'sans-serif',
+            <p style={{
+              width: '100%',
+              color: '#FFF',
               textAlign: 'center',
+              lineHeight: '20px',
             }}
-          >
-            Drop files here
+            >
+              {`${this.state.progress.bits} Bits`}
+            </p>
           </div>
-        </InputFile>
+          <Pre>{getPre('PROGRESS_HANLDER')}</Pre>
+        </Card>
+
+        <Card>
+          <Title>Explicit output type</Title>
+          <InputFile
+            onComplete={result => console.log(result)}
+            output="JSON"
+          />
+          <Pre>{getPre('EXPLICIT_OUTPUT_TYPE')}</Pre>
+        </Card>
+
+        <Card>
+          <Title>With children</Title>
+          <InputFile onComplete={result => console.log(result)}>
+            <button
+              style={{
+                color: '#E62264',
+                backgroundColor: '#FFF',
+                border: '2px solid #E62264',
+                borderRadius: 5,
+                padding: 10,
+                textTransform: 'uppercase',
+                cursor: 'inherit',
+              }}
+            >
+              Custom button
+            </button>
+          </InputFile>
+          <Pre>{getPre('WITH_CHILDREN')}</Pre>
+          <InputFile onComplete={result => console.log(result)}>
+            <div
+              style={{
+                color: '#E6226488',
+                backgroundColor: '#FFF',
+                border: '2px dotted #E62264',
+                borderRadius: 20,
+                padding: 20,
+                fontFamily: 'sans-serif',
+                textAlign: 'center',
+              }}
+            >
+              Drop files here
+            </div>
+          </InputFile>
+          <Pre>{getPre('WITH_CHILDREN_DROP')}</Pre>
+        </Card>
       </Fragment>
     );
   }
@@ -69,16 +103,16 @@ export default App;
 
 function getPre(pre) {
   switch (pre) {
-    case 1:
+    case 'BASIC_USAGE':
       return `<InputFile
   onComplete={result => console.log(result)}
 />`;
-    case 2:
+    case 'EXPLICIT_OUTPUT_TYPE':
       return `<InputFile
   onComplete={result => console.log(result)}
   output="JSON"
 />`;
-    case 3:
+    case 'WITH_CHILDREN':
       return `<InputFile onComplete={result => console.log(result)}>
   <button
     style={{
@@ -94,7 +128,7 @@ function getPre(pre) {
     Custom button
   </button>
 </InputFile>`;
-    case 4:
+    case 'WITH_CHILDREN_DROP':
       return `<InputFile onComplete={result => console.log(result)}>
   <div
     style={{
@@ -110,19 +144,62 @@ function getPre(pre) {
     Drop files here
   </div>
 </InputFile>`;
+    case 'PROGRESS_HANLDER':
+      return `<InputFile
+  onComplete={result => console.log(result)}
+  onProgress={progress => this.setState({ progress })}
+/>
+<div style={{
+  height: 20,
+  backgroundColor: '#E62264',
+  width: \`\${this.state.progress.porcentage}%\`,
+  fontFamily: 'sans-serif',
+  borderRadius: 10,
+}}
+>
+  <p style={{
+    width: '100%',
+    color: '#FFF',
+    textAlign: 'center',
+    lineHeight: '20px',
+  }}
+  >
+    {\`\${this.state.progress.bits} Bits\`}
+  </p>
+</div>`
     default:
       break;
   }
 }
 
 const Pre = ({ children }) => (
-  <pre style={{ background: '#EEE', padding: '1em', color: '#555', fontFamily: 'monospace, consolas' }}>
+  <pre style={{ padding: '1em', color: '#555', fontFamily: 'monospace, consolas' }}>
     {children}
   </pre>
 );
 
 function Title({ children }) {
   return (
-    <h3 style={{ fontFamily: 'sans-serif', color: '#555', marginTop: 35 }}>{children}</h3>
+    <h3 style={{
+      fontFamily: 'sans-serif',
+      color: '#555',
+      margin: '10px 0 20px 0',
+    }}
+    >
+      {children}
+    </h3>
   );
 }
+
+const Card = ({ children }) => (
+  <div style={{
+    backgroundColor: '#FFF',
+    boxShadow: '0 5px 10px 0 #BBB',
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+  }}
+  >
+    {children}
+  </div>
+);

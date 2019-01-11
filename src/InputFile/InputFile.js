@@ -61,7 +61,7 @@ class InputFile extends PureComponent {
   }
 
   readFile(file) {
-    const { readAs } = this.props;
+    const { readAs, onProgress } = this.props;
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (evt) => {
@@ -71,15 +71,21 @@ class InputFile extends PureComponent {
         reader.abort();
         reject(new Error('Error loading file.'));
       };
+      reader.onprogress = (evt) => {
+        onProgress({
+          porcentage: evt.lengthComputable ? Math.round((evt.loaded / evt.total) * 100) : 0,
+          bits: evt.loaded,
+        });
+      };
       switch (readAs) {
         case 'ARRAY_BUFFER':
-          reader.readAsArrayBuffer(file)
+          reader.readAsArrayBuffer(file);
           break;
         case 'BINARY_STRING':
-          reader.readAsBinaryString(file)
+          reader.readAsBinaryString(file);
           break;
         case 'DATA_URL':
-          reader.readAsDataURL(file)
+          reader.readAsDataURL(file);
           break;
         default:
           reader.readAsText(file);
@@ -121,6 +127,7 @@ InputFile.propTypes = {
   multiple: PropTypes.bool,
   children: PropTypes.object,
   onComplete: PropTypes.func.isRequired,
+  onProgress: PropTypes.func,
   onError: PropTypes.func,
   output: PropTypes.oneOf(['ANY', 'JSON', 'IMG']),
   readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']),
@@ -134,6 +141,7 @@ InputFile.defaultProps = {
   readAs: 'TEXT',
   noDrop: false,
   onError: err => console.error(err),
+  onProgress: () => { },
 };
 
 export default InputFile;
