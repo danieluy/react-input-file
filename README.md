@@ -40,6 +40,8 @@ class App extends Component {
 | output      | ``Enum['ANY', 'JSON']``                                        | Formats the result                                                                                               | 'ANY'                           | ``false`` |
 
 ## Changelog
+### v0.3.0
+- Added progress handler
 ### v0.2.0
 - Added drag and drop support
 ### v0.1.1
