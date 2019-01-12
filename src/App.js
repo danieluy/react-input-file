@@ -1,5 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import InputFile from './InputFile/InputFile';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula } from 'react-syntax-highlighter/dist/styles/prism';
 
 class App extends PureComponent {
   constructor() {
@@ -35,6 +37,7 @@ class App extends PureComponent {
             width: `${this.state.progress.porcentage}%`,
             fontFamily: 'sans-serif',
             borderRadius: 10,
+            marginBottom: 20,
           }}
           >
             <p style={{
@@ -104,9 +107,7 @@ export default App;
 function getPre(pre) {
   switch (pre) {
     case 'BASIC_USAGE':
-      return `<InputFile
-  onComplete={result => console.log(result)}
-/>`;
+      return '<InputFile onComplete={result => console.log(result)} />';
     case 'EXPLICIT_OUTPUT_TYPE':
       return `<InputFile
   onComplete={result => console.log(result)}
@@ -155,6 +156,7 @@ function getPre(pre) {
   width: \`\${this.state.progress.porcentage}%\`,
   fontFamily: 'sans-serif',
   borderRadius: 10,
+  marginBottom: 20,
 }}
 >
   <p style={{
@@ -166,28 +168,33 @@ function getPre(pre) {
   >
     {\`\${this.state.progress.bits} Bits\`}
   </p>
-</div>`
+</div>`;
     default:
       break;
   }
 }
 
-const Pre = ({ children }) => (
-  <pre style={{ padding: '1em', color: '#555', fontFamily: 'monospace, consolas' }}>
-    {children}
-  </pre>
-);
+class Pre extends PureComponent {
+  render() {
+    const { children } = this.props;
+    return (
+      <SyntaxHighlighter language="javascript" style={darcula}>
+        {children}
+      </SyntaxHighlighter>
+    );
+  }
+}
 
 function Title({ children }) {
   return (
-    <h3 style={{
+    <h1 style={{
       fontFamily: 'sans-serif',
       color: '#555',
       margin: '10px 0 20px 0',
     }}
     >
       {children}
-    </h3>
+    </h1>
   );
 }
 
@@ -196,8 +203,10 @@ const Card = ({ children }) => (
     backgroundColor: '#FFF',
     boxShadow: '0 5px 10px 0 #BBB',
     padding: 10,
-    marginBottom: 20,
     borderRadius: 5,
+    minWidth: 800,
+    width: '50%',
+    margin: '0 auto 20px auto',
   }}
   >
     {children}
