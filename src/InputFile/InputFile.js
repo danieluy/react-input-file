@@ -95,7 +95,7 @@ class InputFile extends PureComponent {
   }
 
   render() {
-    const { multiple, children, output, noDrop } = this.props;
+    const { multiple, children, output, noDrop, noClick } = this.props;
     const id = Math.random();
     const label = multiple ? 'Upload files' : 'Upload file';
     const accept = output !== 'ANY'
@@ -105,16 +105,17 @@ class InputFile extends PureComponent {
       <label
         htmlFor={id}
         aria-label={label}
-        style={!children ? style.button : { cursor: 'pointer' }}
+        style={style.button({ children, noClick })}
         onDragOver={!noDrop ? this.onDragOver : null}
         onDrop={!noDrop ? this.onDrop : null}
+        onClick={evt => noClick && evt.preventDefault()}
       >
         {children || label}
         <input
           id={id}
           type="file"
           multiple={multiple}
-          style={style.input}
+          style={style.input()}
           onChange={this.onChange}
           accept={accept}
         />
@@ -132,6 +133,7 @@ InputFile.propTypes = {
   output: PropTypes.oneOf(['ANY', 'JSON', 'IMG']),
   readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']),
   noDrop: PropTypes.bool,
+  noClick: PropTypes.bool,
 };
 
 InputFile.defaultProps = {
@@ -140,6 +142,7 @@ InputFile.defaultProps = {
   output: 'ANY',
   readAs: 'TEXT',
   noDrop: false,
+  noClick: false,
   onError: err => console.error(err),
   onProgress: () => { },
 };

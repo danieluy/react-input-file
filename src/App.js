@@ -26,6 +26,15 @@ class App extends PureComponent {
         </Card>
 
         <Card>
+          <Title>Explicit output type</Title>
+          <InputFile
+            onComplete={result => console.log(result)}
+            output="JSON"
+          />
+          <Pre>{getPre('EXPLICIT_OUTPUT_TYPE')}</Pre>
+        </Card>
+
+        <Card>
           <Title>Progress handler</Title>
           <InputFile
             onComplete={result => console.log(result)}
@@ -54,18 +63,9 @@ class App extends PureComponent {
         </Card>
 
         <Card>
-          <Title>Explicit output type</Title>
-          <InputFile
-            onComplete={result => console.log(result)}
-            output="JSON"
-          />
-          <Pre>{getPre('EXPLICIT_OUTPUT_TYPE')}</Pre>
-        </Card>
-
-        <Card>
           <Title>With children</Title>
           <InputFile onComplete={result => console.log(result)}>
-            <button
+            <div
               style={{
                 color: '#E62264',
                 backgroundColor: '#FFF',
@@ -74,16 +74,19 @@ class App extends PureComponent {
                 padding: 10,
                 textTransform: 'uppercase',
                 cursor: 'inherit',
+                display: 'inline-block',
+                fontFamily: 'sans-serif',
+                textAlign: 'center',
               }}
             >
               Custom button
-            </button>
+            </div>
           </InputFile>
           <Pre>{getPre('WITH_CHILDREN')}</Pre>
-          <InputFile onComplete={result => console.log(result)}>
+          <InputFile onComplete={result => console.log(result)} noClick multiple>
             <div
               style={{
-                color: '#E6226488',
+                color: '#E62264',
                 backgroundColor: '#FFF',
                 border: '2px dotted #E62264',
                 borderRadius: 20,
@@ -92,7 +95,7 @@ class App extends PureComponent {
                 textAlign: 'center',
               }}
             >
-              Drop files here
+              Drop files here.
             </div>
           </InputFile>
           <Pre>{getPre('WITH_CHILDREN_DROP')}</Pre>
@@ -115,25 +118,28 @@ function getPre(pre) {
 />`;
     case 'WITH_CHILDREN':
       return `<InputFile onComplete={result => console.log(result)}>
-  <button
-    style={{
-      color: '#E62264',
-      backgroundColor: '#FFF',
-      border: '2px solid #E62264',
-      borderRadius: 5,
-      padding: 10,
-      textTransform: 'uppercase',
-      cursor: 'inherit',
-    }}
-  >
-    Custom button
-  </button>
+    <div
+      style={{
+        color: '#E62264',
+        backgroundColor: '#FFF',
+        border: '2px solid #E62264',
+        borderRadius: 5,
+        padding: 10,
+        textTransform: 'uppercase',
+        cursor: 'inherit',
+        display: 'inline-block',
+        fontFamily: 'sans-serif',
+        textAlign: 'center',
+      }}
+    >
+      Custom button
+    </div>
 </InputFile>`;
     case 'WITH_CHILDREN_DROP':
-      return `<InputFile onComplete={result => console.log(result)}>
+      return `<InputFile onComplete={result => console.log(result)} noClick multiple>
   <div
     style={{
-      color: '#E6226488',
+      color: '#E62264',
       backgroundColor: '#FFF',
       border: '2px dotted #E62264',
       borderRadius: 20,

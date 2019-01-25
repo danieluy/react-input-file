@@ -1,6 +1,6 @@
 {
   "name": "ds-react-input-file",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React component to handle file uploads",
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev.config.js --watch-poll --env.development",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/danieluy/react-input-file.git"
   },
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
