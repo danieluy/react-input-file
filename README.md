@@ -28,10 +28,12 @@ class App extends Component {
 | multiple    | ``Boolean``                                                    | Allows multi-selection and forces ``onComplete`` to return an ``Array``                                          | ``false``                       | ``false`` |
 | noDrop      | ``Boolean``                                                    | Disables drag and drop support                                                                                   | ``false``                       | ``false`` |
 | noClick    | ``Boolean``                                                    | Disables click support                                                                                           | ``false``                       | ``false`` |
-| readAs      | ``Enum['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']``  | Sets the read mode of ``FileReader`` [[+]](https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods)  | 'TEXT'                          | ``false`` |
+| readAs      | ``Enum['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER', 'NO_READ']``  | Sets the read mode of ``FileReader`` [[+]](https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods). `NO_READ` returns raw files input.  | 'TEXT'                          | ``false`` |
 | output      | ``Enum['ANY', 'JSON']``                                        | Formats the result                                                                                               | 'ANY'                           | ``false`` |
 
 ## Changelog
+### v0.5.0
+- Added option to disable file read
 ### v0.4.0
 - Added option to disable click support
 ### v0.3.0

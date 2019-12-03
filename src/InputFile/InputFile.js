@@ -62,6 +62,9 @@ class InputFile extends PureComponent {
 
   readFile(file) {
     const { readAs, onProgress } = this.props;
+    if (readAs === 'NO_READ')
+      return Promise.resolve(file);
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (evt) => {

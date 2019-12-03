@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = (env) => {
   const config = {
     devServer: {
-      contentBase: path.join(__dirname, 'build'),
+      contentBase: path.join(__dirname, 'docs'),
       compress: true,
       port: 5000,
       historyApiFallback: true,
