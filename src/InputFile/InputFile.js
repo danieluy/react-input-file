@@ -104,6 +104,7 @@ class InputFile extends PureComponent {
     const accept = output !== 'ANY'
       ? outputs[output].accept
       : undefined;
+
     return (
       <label
         htmlFor={id}
@@ -146,8 +147,8 @@ InputFile.defaultProps = {
   readAs: 'TEXT',
   noDrop: false,
   noClick: false,
-  onError: err => console.error(err),
-  onProgress: () => { },
+  onError: () => 0,
+  onProgress: () => 0,
 };
 
 export default InputFile;
