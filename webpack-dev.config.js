@@ -16,7 +16,7 @@ module.exports = (env) => {
     output: {
       publicPath: '/',
       filename: '[name].js',
-      path: path.join(__dirname, 'build'),
+      path: path.join(__dirname, 'docs'),
     },
     module: {
       loaders: [
