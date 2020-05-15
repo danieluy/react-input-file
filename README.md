@@ -30,9 +30,11 @@ class App extends Component {
 | noClick     | ``Boolean``                                                               | Disables click support                                                                                                                               | ``false``                        | ``false`` |
 | readAs      | ``Enum['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER', 'NO_READ']``  | Sets the [read mode of FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods). `NO_READ` returns raw input.                | 'TEXT'                           | ``false`` |
 | output      | ``Enum['JSON']``                                                          | Formats the result                                                                                                                                   | -                                | ``false`` |
-| accept      | ``Enum['JSON']``                                                          | Formats the result                                                                                                                                   | -                                | ``false`` |
+| accept      | ``ACCEPT helpers, extension name or mime-type``                           | Limits input types. For ACCEPT helpers see [Live demo with samples](https://danieluy.github.io/react-input-file/)                                    | -                                | ``false`` |
 
 ## Changelog
+### v0.7.1
+- Fixed docs
 ### v0.7.0
 - Added accept suport to limit input types
 ### v0.6.0
