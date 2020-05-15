@@ -7,18 +7,21 @@ class InputFile extends PureComponent {
   constructor() {
     super();
     this.state = {};
+    this.inputRef = React.createRef();
     this.onChange = this.onChange.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
     this.output = this.output.bind(this);
+    this.withOptions = this.childrenWithOptions.bind(this);
+    this.handleChildrenClick = this.handleChildrenClick.bind(this);
   }
 
   onChange(evt) {
     const { onComplete, multiple, output, onError } = this.props;
     const files = Array.from(evt.target.files).filter((file) => {
-      if (output === 'ANY')
-        return true;
-      return file.type === outputs[output].mimeType;
+      if (output && outputs[output])
+        return file.type === outputs[output].mimeType;
+      return true;
     });
     if (files.length)
       Promise.all(files.map(file => this.readFile(file)))
@@ -33,9 +36,9 @@ class InputFile extends PureComponent {
     evt.preventDefault();
     const { onComplete, multiple, output, onError } = this.props;
     const files = Array.from(evt.dataTransfer.files).filter((file) => {
-      if (output === 'ANY')
-        return true;
-      return file.type === outputs[output].mimeType;
+      if (output && outputs[output])
+        return file.type === outputs[output].mimeType;
+      return true;
     });
     if (files.length)
       Promise.all(files.map(file => this.readFile(file)))
@@ -52,7 +55,9 @@ class InputFile extends PureComponent {
   output(results) {
     const { onComplete, multiple, output, onError } = this.props;
     try {
-      const out = results.map(file => outputs[output].transform(file));
+      let out = results;
+      if (output && outputs[output])
+        out = results.map(file => outputs[output].transform(file));
       onComplete(multiple ? out : (out[0] || null));
     }
     catch (err) {
@@ -97,6 +102,22 @@ class InputFile extends PureComponent {
     });
   }
 
+  handleChildrenClick(evt) {
+    const { noClick } = this.props;
+    if (noClick) return;
+    evt.preventDefault();
+    this.inputRef.current.click();
+  }
+
+  childrenWithOptions() {
+    const { children, noDrop } = this.props;
+    return React.cloneElement(children, {
+      onDragOver: !noDrop ? this.onDragOver : null,
+      onDrop: !noDrop ? this.onDrop : null,
+      onClick: this.handleChildrenClick,
+    });
+  }
+
   render() {
     const { multiple, children, output, noDrop, noClick } = this.props;
     const id = Math.random();
@@ -105,11 +126,27 @@ class InputFile extends PureComponent {
       ? outputs[output].accept
       : undefined;
 
+    if (children)
+      return (
+        <React.Fragment>
+          {this.childrenWithOptions()}
+          <input
+            id={id}
+            type="file"
+            multiple={multiple}
+            style={style.input()}
+            onChange={this.onChange}
+            accept={accept}
+            ref={this.inputRef}
+          />
+        </React.Fragment>
+      );
+
     return (
       <label
         htmlFor={id}
         aria-label={label}
-        style={style.button({ children, noClick })}
+        style={style.button({ children: children, noClick })}
         onDragOver={!noDrop ? this.onDragOver : null}
         onDrop={!noDrop ? this.onDrop : null}
         onClick={evt => noClick && evt.preventDefault()}
@@ -134,8 +171,8 @@ InputFile.propTypes = {
   onComplete: PropTypes.func.isRequired,
   onProgress: PropTypes.func,
   onError: PropTypes.func,
-  output: PropTypes.oneOf(['ANY', 'JSON', 'IMG']),
-  readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER']),
+  output: PropTypes.oneOf(Object.keys(outputs)),
+  readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER', 'NO_READ']),
   noDrop: PropTypes.bool,
   noClick: PropTypes.bool,
 };
@@ -143,7 +180,7 @@ InputFile.propTypes = {
 InputFile.defaultProps = {
   multiple: false,
   children: null,
-  output: 'ANY',
+  output: null,
   readAs: 'TEXT',
   noDrop: false,
   noClick: false,

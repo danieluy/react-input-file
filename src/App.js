@@ -65,7 +65,7 @@ class App extends PureComponent {
         <Card>
           <Title>With children</Title>
           <InputFile onComplete={result => console.log(result)}>
-            <div
+            <button
               style={{
                 color: '#E62264',
                 backgroundColor: '#FFF',
@@ -80,7 +80,7 @@ class App extends PureComponent {
               }}
             >
               Custom button
-            </div>
+            </button>
           </InputFile>
           <Pre>{getPre('WITH_CHILDREN')}</Pre>
           <InputFile onComplete={result => console.log(result)} noClick multiple>

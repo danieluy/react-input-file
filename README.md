@@ -29,7 +29,7 @@ class App extends Component {
 | noDrop      | ``Boolean``                                                               | Disables drag and drop support                                                                                                                       | ``false``                        | ``false`` |
 | noClick     | ``Boolean``                                                               | Disables click support                                                                                                                               | ``false``                        | ``false`` |
 | readAs      | ``Enum['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER', 'NO_READ']``  | Sets the [read mode of FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods). `NO_READ` returns raw input.                | 'TEXT'                           | ``false`` |
-| output      | ``Enum['ANY', 'JSON']``                                                   | Formats the result                                                                                                                                   | 'ANY'                            | ``false`` |
+| output      | ``Enum['JSON']``                                                          | Formats the result                                                                                                                                   | -                                | ``false`` |
 
 ## Changelog
 ### v0.5.0
