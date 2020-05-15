@@ -137,7 +137,7 @@ function getPre(pre) {
 // ...
 <InputFile
   onComplete={result => console.log(result)}
-  accepts={[
+  accept={[
     ACCEPT.IMAGE,
     ACCEPT.AUDIO,
     'application/msword',
