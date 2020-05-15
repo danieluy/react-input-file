@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import style from './styles';
 import outputs from './outputs';
+import _accept from './accept';
 
 class InputFile extends PureComponent {
   constructor() {
@@ -14,6 +15,7 @@ class InputFile extends PureComponent {
     this.output = this.output.bind(this);
     this.withOptions = this.childrenWithOptions.bind(this);
     this.handleChildrenClick = this.handleChildrenClick.bind(this);
+    this.renderInputFile = this.renderInputFile.bind(this);
   }
 
   onChange(evt) {
@@ -118,31 +120,38 @@ class InputFile extends PureComponent {
     });
   }
 
+  renderInputFile(id) {
+    const { multiple, accept } = this.props;
+    const strAccept = accept.length ? accept.join(',') : undefined;
+
+    return (
+      <input
+        id={id}
+        type="file"
+        multiple={multiple}
+        style={style.input()}
+        onChange={this.onChange}
+        accept={strAccept}
+        ref={this.inputRef}
+      />
+    );
+  }
+
   render() {
-    const { multiple, children, output, noDrop, noClick } = this.props;
-    const id = Math.random();
+    const { multiple, children, accept, noDrop, noClick } = this.props;
     const label = multiple ? 'Upload files' : 'Upload file';
-    const accept = output !== 'ANY'
-      ? outputs[output].accept
-      : undefined;
+    const id = Math.random();
 
     if (children)
       return (
         <React.Fragment>
           {this.childrenWithOptions()}
-          <input
-            id={id}
-            type="file"
-            multiple={multiple}
-            style={style.input()}
-            onChange={this.onChange}
-            accept={accept}
-            ref={this.inputRef}
-          />
+          {this.renderInputFile(id)}
         </React.Fragment>
       );
 
     return (
+      // eslint-disable-next-line jsx-a11y/label-has-for
       <label
         htmlFor={id}
         aria-label={label}
@@ -152,14 +161,7 @@ class InputFile extends PureComponent {
         onClick={evt => noClick && evt.preventDefault()}
       >
         {children || label}
-        <input
-          id={id}
-          type="file"
-          multiple={multiple}
-          style={style.input()}
-          onChange={this.onChange}
-          accept={accept}
-        />
+        {this.renderInputFile(id)}
       </label>
     );
   }
@@ -172,6 +174,7 @@ InputFile.propTypes = {
   onProgress: PropTypes.func,
   onError: PropTypes.func,
   output: PropTypes.oneOf(Object.keys(outputs)),
+  accept: PropTypes.arrayOf(PropTypes.string),
   readAs: PropTypes.oneOf(['TEXT', 'DATA_URL', 'BINARY_STRING', 'ARRAY_BUFFER', 'NO_READ']),
   noDrop: PropTypes.bool,
   noClick: PropTypes.bool,
@@ -181,6 +184,7 @@ InputFile.defaultProps = {
   multiple: false,
   children: null,
   output: null,
+  accept: [],
   readAs: 'TEXT',
   noDrop: false,
   noClick: false,
@@ -189,3 +193,5 @@ InputFile.defaultProps = {
 };
 
 export default InputFile;
+
+export const ACCEPT = _accept;

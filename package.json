@@ -1,6 +1,6 @@
 {
   "name": "ds-react-input-file",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "React component to handle file uploads",
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev.config.js --watch-poll --env.development",

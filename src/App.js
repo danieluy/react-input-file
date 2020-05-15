@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import InputFile from './InputFile/InputFile';
+import InputFile, { ACCEPT } from './InputFile/InputFile';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula } from 'react-syntax-highlighter/dist/styles/prism';
 
@@ -26,12 +26,28 @@ class App extends PureComponent {
         </Card>
 
         <Card>
-          <Title>Explicit output type</Title>
+          <Title>Format output</Title>
           <InputFile
             onComplete={result => console.log(result)}
             output="JSON"
           />
-          <Pre>{getPre('EXPLICIT_OUTPUT_TYPE')}</Pre>
+          <Pre>{getPre('FORMAT_OUTPUT')}</Pre>
+        </Card>
+
+        <Card>
+          <Title>Limit input types</Title>
+          <Paragraph>ACCEPT provides helpers for json, images, video and audio.</Paragraph>
+          <Paragraph>If you require something more specific you can also use any extension (e.g .docx for MS Word Documents), or even any valid mime-type.</Paragraph>
+          <InputFile
+            onComplete={result => console.log(result)}
+            accept={[
+              ACCEPT.IMAGE,
+              ACCEPT.AUDIO,
+              'application/msword',
+              '.txt',
+            ]}
+          />
+          <Pre>{getPre('LIMIT_INPUT_TYPES')}</Pre>
         </Card>
 
         <Card>
@@ -111,10 +127,22 @@ function getPre(pre) {
   switch (pre) {
     case 'BASIC_USAGE':
       return '<InputFile onComplete={result => console.log(result)} />';
-    case 'EXPLICIT_OUTPUT_TYPE':
+    case 'FORMAT_OUTPUT':
       return `<InputFile
   onComplete={result => console.log(result)}
   output="JSON"
+/>`;
+    case 'LIMIT_INPUT_TYPES':
+      return `import InputFile, { ACCEPT } from 'ds-react-input-file';
+// ...
+<InputFile
+  onComplete={result => console.log(result)}
+  accepts={[
+    ACCEPT.IMAGE,
+    ACCEPT.AUDIO,
+    'application/msword',
+    '.txt',
+  ]}
 />`;
     case 'WITH_CHILDREN':
       return `<InputFile onComplete={result => console.log(result)}>
@@ -201,6 +229,19 @@ function Title({ children }) {
     >
       {children}
     </h1>
+  );
+}
+
+function Paragraph({ children }) {
+  return (
+    <p style={{
+      fontFamily: 'sans-serif',
+      color: '#555',
+      margin: '5px 0 10px 0',
+    }}
+    >
+      {children}
+    </p>
   );
 }
 
