@@ -32,6 +32,11 @@ class App extends Component {
 | output      | ``Enum['JSON']``                                                          | Formats the result                                                                                                                                   | -                                | ``false`` |
 
 ## Changelog
+### v0.6.0
+- Changed output default and options
+- Removed default error handling function
+### v0.5.1
+- Fixed a bug that was preventing some children from being clicked
 ### v0.5.0
 - Added option to disable file read
 ### v0.4.0
