@@ -33,10 +33,13 @@ class App extends Component {
 | accept      | ``ACCEPT helpers, extension name or mime-type``                           | Limits input types. For ACCEPT helpers see [Live demo with samples](https://danieluy.github.io/react-input-file/)                                    | -                                | ``false`` |
 
 ## Changelog
+### v0.7.2
+- Fixed a typo in docs
+- Fixed samples page title
 ### v0.7.1
 - Fixed docs
 ### v0.7.0
-- Added accept suport to limit input types
+- Added accept support to limit input types
 ### v0.6.0
 - Changed output default and options
 - Removed default error handling function
