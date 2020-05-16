@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import style from './styles';
 import outputs from './outputs';
 import _accept from './accept';
 
@@ -13,8 +12,8 @@ class InputFile extends PureComponent {
     this.onDrop = this.onDrop.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
     this.output = this.output.bind(this);
-    this.withOptions = this.childrenWithOptions.bind(this);
-    this.handleChildrenClick = this.handleChildrenClick.bind(this);
+    this.withOptions = this.childrenWithEvents.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.renderInputFile = this.renderInputFile.bind(this);
   }
 
@@ -104,32 +103,31 @@ class InputFile extends PureComponent {
     });
   }
 
-  handleChildrenClick(evt) {
+  handleClick(evt) {
     const { noClick } = this.props;
     if (noClick) return;
     evt.preventDefault();
     this.inputRef.current.click();
   }
 
-  childrenWithOptions() {
+  childrenWithEvents() {
     const { children, noDrop } = this.props;
     return React.cloneElement(children, {
       onDragOver: !noDrop ? this.onDragOver : null,
       onDrop: !noDrop ? this.onDrop : null,
-      onClick: this.handleChildrenClick,
+      onClick: this.handleClick,
     });
   }
 
-  renderInputFile(id) {
+  renderInputFile() {
     const { multiple, accept } = this.props;
     const strAccept = accept.length ? accept.join(',') : undefined;
 
     return (
       <input
-        id={id}
         type="file"
         multiple={multiple}
-        style={style.input()}
+        style={{ display: 'none' }}
         onChange={this.onChange}
         accept={strAccept}
         ref={this.inputRef}
@@ -137,39 +135,44 @@ class InputFile extends PureComponent {
     );
   }
 
-  render() {
-    const { multiple, children, accept, noDrop, noClick } = this.props;
-    const label = multiple ? 'Upload files' : 'Upload file';
-    const id = Math.random();
+  getLabel(multiple) {
+    return multiple ? 'Upload files' : 'Upload file';
+  }
 
-    if (children)
+  render() {
+    const { multiple, children, noDrop } = this.props;
+    const label = this.getLabel(multiple);
+
+    if (children && typeof children !== 'string')
       return (
         <React.Fragment>
-          {this.childrenWithOptions()}
-          {this.renderInputFile(id)}
+          {this.childrenWithEvents()}
+          {this.renderInputFile()}
         </React.Fragment>
       );
 
     return (
-      // eslint-disable-next-line jsx-a11y/label-has-for
-      <label
-        htmlFor={id}
-        aria-label={label}
-        style={style.button({ children: children, noClick })}
-        onDragOver={!noDrop ? this.onDragOver : null}
-        onDrop={!noDrop ? this.onDrop : null}
-        onClick={evt => noClick && evt.preventDefault()}
-      >
-        {children || label}
-        {this.renderInputFile(id)}
-      </label>
+      <React.Fragment>
+        <button
+          aria-label={children || label}
+          onDragOver={!noDrop ? this.onDragOver : null}
+          onDrop={!noDrop ? this.onDrop : null}
+          onClick={this.handleClick}
+        >
+          {children || label}
+        </button>
+        {this.renderInputFile()}
+      </React.Fragment>
     );
   }
 }
 
 InputFile.propTypes = {
   multiple: PropTypes.bool,
-  children: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
   onComplete: PropTypes.func.isRequired,
   onProgress: PropTypes.func,
   onError: PropTypes.func,

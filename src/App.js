@@ -23,15 +23,55 @@ class App extends PureComponent {
             onComplete={result => console.log(result)}
           />
           <Pre>{getPre('BASIC_USAGE')}</Pre>
+          <InputFile
+            onComplete={result => console.log(result)}
+            multiple
+          />
+          <Pre>{getPre('BASIC_USAGE_MULTIPLE')}</Pre>
         </Card>
 
         <Card>
-          <Title>Format output</Title>
-          <InputFile
-            onComplete={result => console.log(result)}
-            output="JSON"
-          />
-          <Pre>{getPre('FORMAT_OUTPUT')}</Pre>
+          <Title>With children</Title>
+          <InputFile onComplete={result => console.log(result)}>
+            Custom label
+          </InputFile>
+          <Pre>{getPre('WITH_CHILDREN_LABEL')}</Pre>
+
+          <InputFile onComplete={result => console.log(result)}>
+            <button
+              style={{
+                color: '#E62264',
+                backgroundColor: '#FFF',
+                border: '2px solid #E62264',
+                borderRadius: 5,
+                padding: 10,
+                textTransform: 'uppercase',
+                cursor: 'inherit',
+                display: 'inline-block',
+                fontFamily: 'sans-serif',
+                textAlign: 'center',
+              }}
+            >
+              Custom button
+            </button>
+          </InputFile>
+          <Pre>{getPre('WITH_CHILDREN')}</Pre>
+          <InputFile onComplete={result => console.log(result)} noClick multiple>
+            <div
+              style={{
+                color: '#E62264',
+                backgroundColor: '#FFF',
+                border: '2px dotted #E62264',
+                borderRadius: 20,
+                padding: 20,
+                fontFamily: 'sans-serif',
+                textAlign: 'center',
+              }}
+            >
+              Drop files here.
+            </div>
+          </InputFile>
+          <Pre>{getPre('WITH_CHILDREN_DROP')}</Pre>
         </Card>
 
         <Card>
@@ -79,42 +119,12 @@ class App extends PureComponent {
         </Card>
 
         <Card>
-          <Title>With children</Title>
-          <InputFile onComplete={result => console.log(result)}>
-            <button
-              style={{
-                color: '#E62264',
-                backgroundColor: '#FFF',
-                border: '2px solid #E62264',
-                borderRadius: 5,
-                padding: 10,
-                textTransform: 'uppercase',
-                cursor: 'inherit',
-                display: 'inline-block',
-                fontFamily: 'sans-serif',
-                textAlign: 'center',
-              }}
-            >
-              Custom button
-            </button>
-          </InputFile>
-          <Pre>{getPre('WITH_CHILDREN')}</Pre>
-          <InputFile onComplete={result => console.log(result)} noClick multiple>
-            <div
-              style={{
-                color: '#E62264',
-                backgroundColor: '#FFF',
-                border: '2px dotted #E62264',
-                borderRadius: 20,
-                padding: 20,
-                fontFamily: 'sans-serif',
-                textAlign: 'center',
-              }}
-            >
-              Drop files here.
-            </div>
-          </InputFile>
-          <Pre>{getPre('WITH_CHILDREN_DROP')}</Pre>
+          <Title>Format output</Title>
+          <InputFile
+            onComplete={result => console.log(result)}
+            output="JSON"
+          />
+          <Pre>{getPre('FORMAT_OUTPUT')}</Pre>
         </Card>
       </Fragment>
     );
@@ -125,14 +135,19 @@ export default App;
 
 function getPre(pre) {
   switch (pre) {
-    case 'BASIC_USAGE':
+    case 'BASIC_USAGE': {
       return '<InputFile onComplete={result => console.log(result)} />';
+    }
+    case 'BASIC_USAGE_MULTIPLE': {
+      return '<InputFile onComplete={result => console.log(result)} multiple/>';
+    }
     case 'FORMAT_OUTPUT':
-      return `<InputFile
+      return (`
+<InputFile
   onComplete={result => console.log(result)}
   output="JSON"
-/>`;
-    case 'LIMIT_INPUT_TYPES':
+/>`.trim());
+    case 'LIMIT_INPUT_TYPES': {
       return `import InputFile, { ACCEPT } from 'ds-react-input-file';
 // ...
 <InputFile
@@ -144,25 +159,34 @@ function getPre(pre) {
     '.txt',
   ]}
 />`;
-    case 'WITH_CHILDREN':
-      return `<InputFile onComplete={result => console.log(result)}>
-    <div
-      style={{
-        color: '#E62264',
-        backgroundColor: '#FFF',
-        border: '2px solid #E62264',
-        borderRadius: 5,
-        padding: 10,
-        textTransform: 'uppercase',
-        cursor: 'inherit',
-        display: 'inline-block',
-        fontFamily: 'sans-serif',
-        textAlign: 'center',
-      }}
-    >
-      Custom button
-    </div>
-</InputFile>`;
+    }
+    case 'WITH_CHILDREN_LABEL': {
+      return (`
+<InputFile onComplete={result => console.log(result)}>
+  Custom label
+</InputFile>`.trim());
+    }
+    case 'WITH_CHILDREN': {
+      return (`
+<InputFile onComplete={result => console.log(result)}>
+  <button
+    style={{
+      color: '#E62264',
+      backgroundColor: '#FFF',
+      border: '2px solid #E62264',
+      borderRadius: 5,
+      padding: 10,
+      textTransform: 'uppercase',
+      cursor: 'inherit',
+      display: 'inline-block',
+      fontFamily: 'sans-serif',
+      textAlign: 'center',
+    }}
+  >
+    Custom button
+  </button>
+</InputFile>`.trim());
+    }
     case 'WITH_CHILDREN_DROP':
       return `<InputFile onComplete={result => console.log(result)} noClick multiple>
   <div
